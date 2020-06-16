@@ -3,7 +3,7 @@
 # use simple setup for semantic-ui - just download the zip and extract it into here
 rm -r semantic-ui
 curl -sS https://codeload.github.com/Semantic-Org/Semantic-UI-CSS/zip/master > semantic-ui.zip
-unzip -q semantic-ui.zip
+7z x semantic-ui.zip
 rm semantic-ui.zip
 mv Semantic-UI-CSS-master semantic-ui
 
