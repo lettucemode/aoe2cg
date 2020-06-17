@@ -12,20 +12,22 @@ Twitch panel extension to facilitate community games for Age of Empires II: Defi
 - [Semantic UI](https://semantic-ui.com/)
 - [JQuery](https://jquery.com/)
 
-## Setting up the dev environment
+## Development & Testing
 
 Here's how to get started with this code on a Windows machine. Other OSs are probably similar.
 
-### Backend
+### Prerequisites
 
-- Install [.NET Core SDK 3.1.201](https://dotnet.microsoft.com/download/dotnet-core/3.1)
-- Install Azure Functions Core Tools v3:
+- [.NET Core SDK 3.1.201](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+-  Azure Functions Core Tools v3:
 ```
 npm install -g azure-functions-core-tools@3
 ```
-- Install Visual Studio Code and these extensions:
+- Visual Studio Code and these extensions:
   - Azure Functions
   - C#
+
+### Backend
 
 Clone the repo and open in Visual Studio Code. To build the backend:
 
@@ -58,12 +60,10 @@ Function Runtime Version: 3.0.13353.0
 
 ### Frontend
 
-- Go to the Twitch [Extensions Developer Console](https://dev.twitch.tv/console/extensions), sign in, and register a new extension there.
-- Download and install the Twitch Extensions Developer Rig from their [developer documentation](https://dev.twitch.tv/docs/extensions/rig).
-- `cd` to `/frontend` and run `package-frontend.sh` to fetch the dependencies (requires a [bash shell](https://git-scm.com/) and [7zip](https://www.7-zip.org/)).
-- Run the rig, sign in with your Twitch creds, select the extension you created, and specify that the frontend is in the `/frontend` folder. 
-- Use the Extension Views panel to create simulated views for the broadcaster and the viewer(s), then click `Run Frontend`. The views should initialize and start sending requests to the backend.
-- Refer to the developer documentation for more details on the rig, how extensions work, and how to run the extension on your channel.
+- Create a panel extension in your [Extensions Developer Console](https://dev.twitch.tv/console/extensions).
+- Install the Twitch Extensions Developer Rig from their [developer documentation](https://dev.twitch.tv/docs/extensions/rig).
+- Run `frontend/package-frontend.sh` to fetch the dependencies (requires a [bash shell](https://git-scm.com/) and [7zip](https://www.7-zip.org/), or just download them manually).
+- Connect the rig to your new extension and configure it to run the views in `/frontend`. Refer to the developer documentation for more details on the rig, how extensions work, and how to run the extension on your channel.
 
 ### local.settings.json
 
@@ -87,7 +87,7 @@ After cloning, create `backend/local.settings.json` with these contents:
 }
 ```
 
-`ExtensionClientId`, `ExtensionSecret`, and `ClientSecret` can all be found on the Twitch extension's settings page. `ExtensionOwnerId` is the numeric Twitch ID of the owner of the extension (probably you).
+`ExtensionClientId`, `ExtensionSecret`, and `ClientSecret` can all be found on the Twitch extension's settings page. `ExtensionOwnerId` is the numeric Twitch ID of the owner of the extension (probably you). It'll be in the rig settings after you have it running.
 
 `CosmosConnectionString` is the connection string to your Cosmos Db account, the one that includes both `AccountEndpoint` and `AccountKey`. You can get it from the Azure portal.
 
