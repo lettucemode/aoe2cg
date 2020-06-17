@@ -1,16 +1,65 @@
 # aoe2cg
 
-Twitch extension to facilitate community games for Age of Empires II: Definitive Edition. 
+Twitch panel extension to facilitate community games for Age of Empires II: Definitive Edition. 
 
 ![Publish Backend](https://github.com/lettucemode/aoe2cg/workflows/Publish%20Backend/badge.svg)
 
 ## Setting up the dev environment
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Here's how to get started with this code on a Windows machine. Other OSs are probably similar.
+
+### Backend
+
+- Install [.NET Core SDK 3.1.201](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+- Install Azure Functions Core Tools v3:
+```
+npm install -g azure-functions-core-tools@3
+```
+- Install Visual Studio Code and these extensions:
+  - Azure Functions
+  - C#
+
+Clone the repo and open in Visual Studio Code. To build the backend:
+
+```
+cd backend
+dotnet build
+```
+
+To debug, open a new VSCode window in `/backend`, press `F5`, and verify that the console displays v3 of Azure Functions Core Tools.
+
+```
+> Executing task: func host start <
+
+
+                  %%%%%%
+                 %%%%%%
+            @   %%%%%%    @      
+          @@   %%%%%%      @@    
+       @@@    %%%%%%%%%%%    @@@ 
+     @@      %%%%%%%%%%        @@
+       @@         %%%%       @@
+         @@      %%%       @@
+           @@    %%      @@
+                %%
+                %
+
+Azure Functions Core Tools (3.0.2534 Commit hash: bc1e9efa8fa78dd1a138dd1ac1ebef97aac8d78e)
+Function Runtime Version: 3.0.13353.0
+```
+
+### Frontend
+
+- Go to the Twitch [Extensions Developer Console](https://dev.twitch.tv/console/extensions), sign in, and register a new extension there.
+- Download and install the Twitch Extensions Developer Rig from their [developer documentation](https://dev.twitch.tv/docs/extensions/rig).
+- Execute `frontend/package-frontend.sh` to fetch the dependencies (requires a [bash shell](https://git-scm.com/) and [7zip](https://www.7-zip.org/). If you don't have those, you can get the dependencies manually).
+- Run the rig, sign in with your Twitch creds, select the extension you created, and point the rig at the `/frontend` folder. 
+- Use the Extension Views panel to create simulated views for the broadcaster and the viewer(s), then click `Run Frontend`. The views should initialize and start sending requests to the backend.
+- Refer to the developer documentation for more details on the rig and how extensions work.
 
 ### local.settings.json
 
-After cloning, create a file named `backend/local.settings.json` with these contents:
+After cloning, create `backend/local.settings.json` with these contents:
 
 ```
 {
@@ -32,44 +81,28 @@ After cloning, create a file named `backend/local.settings.json` with these cont
 
 `ExtensionClientId`, `ExtensionSecret`, and `ClientSecret` can all be found on the Twitch extension's settings page. `ExtensionOwnerId` is the numeric Twitch ID of the owner of the extension (probably you).
 
-If you'll be using Cosmos Db for your long-term storage, then `CosmosConnectionString` is the connection string to your Cosmos Db account, the one that includes both `AccountEndpoint` and `AccountKey`. You can get that from the Azure portal. 
+`CosmosConnectionString` is the connection string to your Cosmos Db account, the one that includes both `AccountEndpoint` and `AccountKey`. You can get it from the Azure portal.
 
-### Prerequisites
+## Deployments
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+To deploy the backend to your Azure Functions App:
 
 ```
-Give the example
+cd backend
+func azure functionapp publish <your app name here>
 ```
 
-And repeat
+There's also a [GitHub Actions workflow](/.github/workflows/publish-backend.yml) that does the build & publish to Azure.
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+To deploy the frontend to Twitch, run the `package-frontend.sh` script, then upload `frontend.zip` to the Files tab of your extension developer console page.
 
 ## Built With
 
-- [Semantic UI](https://semantic-ui.com/)
-- [JQuery](https://jquery.com/)
+- [Twitch Extensions Helper/Reference](https://dev.twitch.tv/docs/extensions/reference)
 - [Azure Functions](https://azure.microsoft.com/en-us/services/functions/)
 - [Azure Cosmos Db](https://azure.microsoft.com/en-us/services/cosmos-db/)
+- [Semantic UI](https://semantic-ui.com/)
+- [JQuery](https://jquery.com/)
 
 ## License
 
