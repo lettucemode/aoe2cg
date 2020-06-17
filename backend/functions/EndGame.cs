@@ -48,6 +48,8 @@ namespace aoe2cg
             activeGame.gameState = GameState.Ended;
             await this.SaveGame(activeGame);
             await this._twitchService.SendPubSubBroadcast(jwt.ChannelId, GameState.Ended.ToString(), log);
+            await this._twitchService.SendChannelChatMessage(jwt.ChannelId,
+                "The raffle is over and the game is starting soon. Enjoy! 14 14 14", log);
 
             var responseMessage = $"Game id {activeGame.id} ended.";
             log.LogInformation(responseMessage);

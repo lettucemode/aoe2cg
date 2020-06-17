@@ -65,7 +65,7 @@ namespace aoe2cg
             {
                 await this._twitchService.SendPubSubBroadcast(jwt.ChannelId, GameState.Active, log);
                 await this._twitchService.SendChannelChatMessage(jwt.ChannelId,
-                    "A community game is starting! Sign up using the panel below the stream!", log);
+                    "A community game is starting! Enter the raffle using the panel below the stream!", log);
                 responseMessage = $"START THE GAME ALREADY {activeGame.id} CHANNEL {activeGame.channelId}.";
             }
             else
