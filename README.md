@@ -2,7 +2,7 @@
 
 Twitch panel extension to facilitate community games for Age of Empires II: Definitive Edition. 
 
-![Publish Backend](https://github.com/lettucemode/aoe2cg/workflows/Publish%20Backend/badge.svg)
+![Backend](https://github.com/lettucemode/aoe2cg/workflows/Backend/badge.svg)
 
 ## Built With
 
