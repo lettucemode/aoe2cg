@@ -13,6 +13,7 @@ namespace aoe2cg
         {
             builder.Services.AddSingleton<TwitchService>(
                 s => new TwitchService(
+                    Environment.GetEnvironmentVariable("ExtensionVersion"),
                     Environment.GetEnvironmentVariable("ExtensionClientId"),
                     Environment.GetEnvironmentVariable("ExtensionSecret"),
                     Environment.GetEnvironmentVariable("ExtensionOwnerId"),

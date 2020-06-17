@@ -18,13 +18,16 @@ namespace aoe2cg
     {
         private const string AUTH_HEADER_NAME = "Authorization";
         private const string BEARER_PREFIX = "Bearer ";
+        private readonly string _extVersion;
         private readonly string _extClientId;
         private readonly string _extSecret;
         private readonly string _extOwnerId;
         private readonly string _clientSecret;
 
-        public TwitchService(string extensionClientId, string extensionSecret, string extensionOwnerId, string clientSecret)
+        public TwitchService(string extensionVersion, string extensionClientId,
+            string extensionSecret, string extensionOwnerId, string clientSecret)
         {
+            this._extVersion = extensionVersion;
             this._extClientId = extensionClientId;
             this._extSecret = extensionSecret;
             this._extOwnerId = extensionOwnerId;
@@ -174,9 +177,8 @@ namespace aoe2cg
 
         public async Task SendChannelChatMessage(string channelId, string message, ILogger log)
         {
-            var extVersion = "0.0.1";
             var url = $"https://api.twitch.tv/extensions/{this._extClientId}/" +
-                $"{extVersion}/channels/{channelId}/chat";
+                $"{this._extVersion}/channels/{channelId}/chat";
             using var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Add("Client-ID", this._extClientId);
             request.Headers.Add("Authorization", BEARER_PREFIX + this.MakePubSubToken(channelId, false, log));

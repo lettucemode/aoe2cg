@@ -68,21 +68,13 @@ After cloning, create `backend/local.settings.json` with these contents:
   "Values": {
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "ExtensionClientId": "<your twitch extension client ID>",
-    "ExtensionSecret": "<your twitch extension secret>",
-    "ExtensionOwnerId": "<your twitch owner ID>",
-    "ClientSecret": "<a generated client secret>",
-    "CosmosConnectionString": "<connection string to cosmos db>"
   },
   "Host": {
     "CORS": "*"
   }
 }
 ```
-
-`ExtensionClientId`, `ExtensionSecret`, and `ClientSecret` can all be found on the Twitch extension's settings page. `ExtensionOwnerId` is the numeric Twitch ID of the owner of the extension (probably you). It'll be in the rig settings after you have it running.
-
-`CosmosConnectionString` is the connection string to your Cosmos Db account, the one that includes both `AccountEndpoint` and `AccountKey`. You can get it from the Azure portal.
+plus whatever other environment settings you desire, then fetch them during runtime with `Environment.GetEnvironmentVariable()`.
 
 ### Frontend
 
