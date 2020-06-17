@@ -58,14 +58,7 @@ Azure Functions Core Tools (3.0.2534 Commit hash: bc1e9efa8fa78dd1a138dd1ac1ebef
 Function Runtime Version: 3.0.13353.0
 ```
 
-### Frontend
-
-- Create a panel extension in your [Extensions Developer Console](https://dev.twitch.tv/console/extensions).
-- Install the Twitch Extensions Developer Rig from their [developer documentation](https://dev.twitch.tv/docs/extensions/rig).
-- Run `frontend/package-frontend.sh` to fetch the dependencies (requires a [bash shell](https://git-scm.com/) and [7zip](https://www.7-zip.org/), or just download them manually).
-- Connect the rig to your new extension and configure it to run the views in `/frontend`. Refer to the developer documentation for more details on the rig, how extensions work, and how to run the extension on your channel.
-
-### local.settings.json
+#### local.settings.json
 
 After cloning, create `backend/local.settings.json` with these contents:
 
@@ -90,6 +83,13 @@ After cloning, create `backend/local.settings.json` with these contents:
 `ExtensionClientId`, `ExtensionSecret`, and `ClientSecret` can all be found on the Twitch extension's settings page. `ExtensionOwnerId` is the numeric Twitch ID of the owner of the extension (probably you). It'll be in the rig settings after you have it running.
 
 `CosmosConnectionString` is the connection string to your Cosmos Db account, the one that includes both `AccountEndpoint` and `AccountKey`. You can get it from the Azure portal.
+
+### Frontend
+
+- Create a panel extension in your [Extensions Developer Console](https://dev.twitch.tv/console/extensions).
+- Install the Twitch Extensions Developer Rig from their [developer documentation](https://dev.twitch.tv/docs/extensions/rig).
+- Run `frontend/package-frontend.sh` to fetch the dependencies (requires a [bash shell](https://git-scm.com/) and [7zip](https://www.7-zip.org/), or just download them manually).
+- Connect the rig to your new extension and configure it to run the views in `/frontend`. Refer to the developer documentation for more details on the rig, how extensions work, and how to run the extension on your channel.
 
 ## Deployments
 
