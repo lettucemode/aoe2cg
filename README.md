@@ -27,7 +27,7 @@ With that said, here's how I run and test this code on a Windows machine. Other 
 npm install -g azure-functions-core-tools@3
 ```
 
-- Visual Studio Code with these extensions:
+- [Visual Studio Code](https://code.visualstudio.com/) with these extensions:
   - Azure Functions
   - C#
 
