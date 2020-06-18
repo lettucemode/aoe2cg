@@ -16,3 +16,9 @@ function removeLoadingSpinner() {
   $('#spinner').removeClass('active');
   $('#placeholder').attr('hidden', 'true');
 }
+
+function getExtVersion() {
+  var regex = /(\d+\.\d+\.\d+)/;
+  var matches = location.href.match(regex);
+  return matches ? matches[0] : "1.0.0";
+}

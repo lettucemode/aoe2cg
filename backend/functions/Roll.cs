@@ -49,10 +49,13 @@ namespace aoe2cg
                 });
             }
 
-            // setup
+            // get request data
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var dataDict = new JsonNetSerializer().Deserialize<Dictionary<string, string>>(requestBody);
             var numToRoll = int.Parse(dataDict["numToRoll"]);
+            var extVersion = dataDict["extVersion"];
+
+            // setup
             var candidates = new List<Registration>();
             var weights = new List<int>();
             var winners = new List<Registration>();
@@ -100,7 +103,7 @@ namespace aoe2cg
                 {
                     chatMessage += "Check the panel below the stream for the game info!";
                 }
-                await this._twitchService.SendChannelChatMessage(jwt.ChannelId, chatMessage, log);
+                await this._twitchService.SendChannelChatMessage(jwt.ChannelId, chatMessage, extVersion, log);
 
                 // notify winner frontends to fetch game info
                 await this._twitchService.SendPubSubWhisper(

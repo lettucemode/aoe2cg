@@ -53,6 +53,7 @@ namespace aoe2cg
             var lobbyId = dataDict["lobbyId"];
             var lobbyPassword = dataDict["lobbyPassword"];
             var subMult = int.Parse(dataDict["subMult"]);
+            var extVersion = dataDict["extVersion"];
 
             // update game information
             activeGame.lobbyId = lobbyId;
@@ -65,7 +66,9 @@ namespace aoe2cg
             {
                 await this._twitchService.SendPubSubBroadcast(jwt.ChannelId, GameState.Active, log);
                 await this._twitchService.SendChannelChatMessage(jwt.ChannelId,
-                    "A community game is starting! Enter the raffle using the panel below the stream!", log);
+                    "A community game is starting! Enter the raffle using the panel below the stream!",
+                    extVersion,
+                    log);
                 responseMessage = $"START THE GAME ALREADY {activeGame.id} CHANNEL {activeGame.channelId}.";
             }
             else
