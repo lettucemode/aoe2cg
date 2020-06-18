@@ -11,7 +11,7 @@ namespace aoe2cg
     {
         [FunctionName("ForbiddenKnowledge")]
         public async Task<IActionResult> ForbiddenKnowledge(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             var validationResult = this._twitchService.ValidateToken(req, log);

@@ -71,7 +71,7 @@ After cloning, create `backend/local.settings.json` with these contents:
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
   },
   "Host": {
     "CORS": "*"

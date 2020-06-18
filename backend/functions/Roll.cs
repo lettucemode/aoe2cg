@@ -16,7 +16,7 @@ namespace aoe2cg
     {
         [FunctionName("Roll")]
         public async Task<IActionResult> Roll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             var validationResult = this._twitchService.ValidateToken(req, log);

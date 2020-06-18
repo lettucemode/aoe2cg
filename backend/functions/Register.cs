@@ -14,7 +14,7 @@ namespace aoe2cg
     {
         [FunctionName("Register")]
         public async Task<IActionResult> Register(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             var validationResult = this._twitchService.ValidateToken(req, log);

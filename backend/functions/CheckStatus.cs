@@ -12,7 +12,7 @@ namespace aoe2cg
     {
         [FunctionName("CheckStatus")]
         public async Task<ActionResult> CheckStatus(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             var validationResult = this._twitchService.ValidateToken(req, log);
