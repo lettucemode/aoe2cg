@@ -22,7 +22,13 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  twitch.rig.log(context);
+  if (context.theme === 'light') { // ugh
+    $('.segment').removeClass('dark-mode');
+    $('.segment').addClass('light-mode');
+  } else {
+    $('.segment').removeClass('light-mode');
+    $('.segment').addClass('dark-mode');
+  }
 });
 
 twitch.configuration.onChanged(function () {

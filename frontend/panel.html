@@ -1,94 +1,97 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Viewer Page</title>
-  </head>
 
-  <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: gainsboro;">
-    <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css" />
-    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
-    <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
-    <script src="shared.js" type="text/javascript"></script>
-    <script src="viewer.js" type="text/javascript"></script>
-    <div class="ui container">
-      <div id="mainSegment" class="ui segment">
-        <div id="spinner" class="ui active dimmer">
-          <div class="ui large text loader">Kicking the server...</div>
+<head>
+  <title>Viewer Page</title>
+</head>
+
+<body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: gainsboro;">
+  <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+  <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
+  <script src="shared.js" type="text/javascript"></script>
+  <script src="viewer.js" type="text/javascript"></script>
+  <div class="ui container">
+    <div id="mainSegment" class="ui segment">
+      <div id="spinner" class="ui active dimmer">
+        <div class="ui large text loader">Kicking the server...</div>
+      </div>
+      <div id="placeholder" class="ui fluid placeholder">
+        <div class="image header">
+          <div class="line"></div>
+          <div class="line"></div>
         </div>
-        <div id="placeholder" class="ui fluid placeholder">
-          <div class="image header">
-            <div class="line"></div>
-            <div class="line"></div>
-          </div>
-          <div class="paragraph">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-          </div>
-        </div>
-        <div id="notLoggedIn" hidden>
-          <h5 class="ui header">
-            You need to be logged in to Twitch in order to join community games.
-          </h5>
-        </div>
-        <div id="gameNotStarted" hidden>
-          <h5 class="ui header">
-            No community game raffles going on right now. Keep watching the stream for the next one!
-          </h5>
-        </div>
-        <div id="identityShare" hidden>
-          <h5 class="ui header">
-            In order for you to sign up, I need to see your Twitch account details. I will check and store your display
-            name (for chat) and whether you're subscribed to this channel (for the sub entry bonus). If that's okay,
-            click the button below.
-          </h5>
-          <button id="btnShareIdentity" class="ui tiny teal button">
-            Share Account Details
-          </button>
-          <h5 class="ui header">
-            You can revoke this in your account settings later.
-          </h5>
-        </div>
-        <div id="clickToRegister" hidden>
-          <h5 class="ui header">
-            A game is starting! The requirements to join are:
-          </h5>
-          <div class="ui bulleted list">
-            <div class="item">
-              You have Age of Empires II: Definitive Edition installed and updated.
-            </div>
-            <div class="item">
-              You are free for the next 2 - 3 hours.
-            </div>
-          </div>
-          <button id="btnRegister" class="ui tiny teal button">
-            Join Raffle
-          </button>
-        </div>
-        <div id="waitingForWin" hidden>
-          <h5 class="ui header">
-            You're signed up! If you are selected, this panel will show you the lobby information you'll need to join.
-            Cross your fingers!
-          </h5>
-        </div>
-        <div id="forbiddenKnowledge" hidden>
-          <h5 class="ui header">
-            You've been selected to play in the community game! Here's the info:
-          </h5>
-          <div class="ui label">
-            Lobby Id
-            <div id="txtLobbyId" class="detail"></div>
-          </div>
-          <div class="ui label">
-            Lobby Password
-            <div id="txtLobbyPassword" class="detail"></div>
-          </div>
-          <h5 class="ui header">
-            To join the game, search for the lobby ID in the multiplayer lobby browser in game. Join it and enter the
-            password when prompted. Have fun!
-          </h5>
+        <div class="paragraph">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
         </div>
       </div>
+      <div id="notLoggedIn" hidden>
+        <h5 class="ui header">
+          You need to be logged in to Twitch in order to join community games.
+        </h5>
+      </div>
+      <div id="gameNotStarted" hidden>
+        <h5 class="ui header">
+          No community game raffles going on right now. Keep watching the stream for the next one!
+        </h5>
+      </div>
+      <div id="identityShare" hidden>
+        <h5 class="ui header">
+          In order for you to sign up, I need to see your Twitch account details. I will check and store your display
+          name (for chat) and whether you're subscribed to this channel (for the sub entry bonus). If that's okay,
+          click the button below.
+        </h5>
+        <button id="btnShareIdentity" class="ui tiny teal button">
+          Share Account Details
+        </button>
+        <h5 class="ui header">
+          You can revoke this in your account settings later.
+        </h5>
+      </div>
+      <div id="clickToRegister" hidden>
+        <h5 class="ui header">
+          A game is starting! The requirements to join are:
+        </h5>
+        <div class="ui bulleted list">
+          <div class="item">
+            You have Age of Empires II: Definitive Edition installed and updated.
+          </div>
+          <div class="item">
+            You are free for the next 2 - 3 hours.
+          </div>
+        </div>
+        <button id="btnRegister" class="ui tiny teal button">
+          Join Raffle
+        </button>
+      </div>
+      <div id="waitingForWin" hidden>
+        <h5 class="ui header">
+          You're signed up! If you are selected, this panel will show you the lobby information you'll need to join.
+          Cross your fingers!
+        </h5>
+      </div>
+      <div id="forbiddenKnowledge" hidden>
+        <h5 class="ui header">
+          You've been selected to play in the community game! Here's the info:
+        </h5>
+        <div class="ui label">
+          Lobby Id
+          <div id="txtLobbyId" class="detail"></div>
+        </div>
+        <div class="ui label">
+          Lobby Password
+          <div id="txtLobbyPassword" class="detail"></div>
+        </div>
+        <h5 class="ui header">
+          To join the game, search for the lobby ID in the multiplayer lobby browser in game. Join it and enter the
+          password when prompted. Have fun!
+        </h5>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

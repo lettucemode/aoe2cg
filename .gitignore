@@ -266,8 +266,9 @@ __pycache__/
 # Twitch Developer Rig extension manifest file
 AoE2\ Community\ Games.json
 
-# semantic-ui and jquery 3.3.1 files
+# ui and jquery files
 frontend/semantic-ui/
+frontend/bootstrap/
 frontend/jquery-3.3.1.min.js
 
 # any .zip left hanging around from uploading frontend files to Twitch

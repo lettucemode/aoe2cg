@@ -19,7 +19,13 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  twitch.rig.log(context);
+  if (context.theme === 'light') { // ugh
+    $('.ui').removeClass('dark-mode');
+    $('.ui').addClass('light-mode');
+  } else {
+    $('.ui').removeClass('light-mode');
+    $('.ui').addClass('dark-mode');
+  }
 });
 
 twitch.configuration.onChanged(function () {
@@ -64,17 +70,17 @@ function checkStatus() {
 
 function incrementEntryCount() {
   entryCount += 1;
-  $('#entryCount').text(entryCount);
+  $('#entryCount').text('Entries: ' + entryCount);
 }
 
 function setEntryCount(val) {
   entryCount = val;
-  $('#entryCount').text(entryCount);
+  $('#entryCount').text('Entries: ' + entryCount);
 }
 
 function resetEntryCount() {
   entryCount = 0;
-  $('#entryCount').text(entryCount);
+  $('#entryCount').text('Entries: ' + entryCount);
 }
 
 $(function () {

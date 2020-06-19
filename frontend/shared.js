@@ -35,6 +35,7 @@ function setVisibleDiv(visibleDiv, divs) {
 
 function removeLoadingSpinner() {
   $('#spinner').removeClass('active');
+  $('#spinner').attr('hidden', 'true');
   $('#placeholder').attr('hidden', 'true');
 }
 

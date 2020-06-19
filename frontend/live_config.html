@@ -9,77 +9,62 @@
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background-color: gainsboro;
     ">
-  <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
   <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
   <script src="jquery-3.3.1.min.js" type="text/javascript"></script>
   <script src="shared.js" type="text/javascript"></script>
   <script src="broadcaster.js" type="text/javascript"></script>
-  <div class="ui container">
-    <div id="mainSegment" class="ui segment">
-      <div id="spinner" class="ui active dimmer">
-        <div class="ui large text loader">Kicking the server...</div>
-        <p></p>
+  <div class="container-fluid">
+    <div id="spinner" class="text-center mt-5">
+      <div class="spinner-border" role="status"></div>
+      <strong>Kicking the server...</strong>
+    </div>
+    <div id="gameSettings" hidden>
+      <span class="font-weight-bold">
+        Start a new raffle here. You can change the settings after if needed.
+      </span>
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Lobby Id</span>
+        </div>
+        <input type="text" class="form-control" id="txtLobbyId" aria-label="Lobby Id" aria-describedby="basic-addon1">
       </div>
-      <div id="placeholder" class="ui fluid placeholder">
-        <div class="image header">
-          <div class="line"></div>
-          <div class="line"></div>
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Lobby Password</span>
         </div>
-        <div class="paragraph">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <input type="text" class="form-control" id="txtLobbyPassword" aria-label="Lobby Password"
+          aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Sub Multiplier</span>
+        </div>
+        <input type="number" class="form-control" id="numSubMult" min="1" max="999" value="1"
+          aria-label="Sub Multiplier" aria-describedby="basic-addon1" />
+      </div>
+      <button type="button" id="btnUpdateSettings" class="btn btn-info">
+        Start Raffle
+      </button>
+      <span class="font-weight-bold">
+        Roll for winners here. You can roll more than once.
+      </span>
+      <span id="entryCount" class="badge badge-pill badge-info">Entries: 0</span>
+      <div class="input-group mb-3">
+        <input id="txtNumToRoll" type="number" class="form-control" aria-label="Roll" placeholder="# to roll" min="1"
+          max="999">
+        <div class="input-group-append">
+          <button id="btnRoll" class="btn btn-info" type="roll">Roll</button>
         </div>
       </div>
-      <div id="gameSettings" hidden>
-        <h5 class="ui header">
-          Start a new raffle here. You can change the settings after if needed.
-        </h5>
-        <div class="ui mini labeled input">
-          <div class="ui label">
-            Lobby Id
-          </div>
-          <input type="text" id="txtLobbyId" />
-        </div>
-        <div class="ui mini labeled input">
-          <div class="ui label">
-            Lobby Password
-          </div>
-          <input type="text" id="txtLobbyPassword" />
-        </div>
-        <div class="ui mini labeled input">
-          <div class="ui label">
-            Sub Multiplier
-          </div>
-          <input type="number" id="numSubMult" min="1" max="999" value="1" />
-        </div>
-        <div class="ui">
-          <button id="btnUpdateSettings" class="tiny ui teal button">
-            Start Raffle
-          </button>
-        </div>
-        <h5 class="ui header">
-          Roll for winners here. You can roll more than once.
-        </h5>
-        <div class="ui label">
-          Entries
-          <div id="entryCount" class="detail">0</div>
-        </div>
-        <div class="ui mini action input">
-          <input type="number" id="txtNumToRoll" style="width: 80px;" placeholder="# to roll" \ min="1" max="999"
-            value="1" />
-          <button id="btnRoll" class="ui mini teal disabled button">
-            Roll
-          </button>
-        </div>
-        <h5 class="ui header">
-          Click this after the match is successfully underway to close the
-          raffle.
-        </h5>
-        <button id="btnEndGame" class="tiny ui orange button">
-          Close Raffle
-        </button>
-      </div>
+      <span class="font-weight-bold">
+        Click this after the match is successfully underway to close the
+        raffle.
+      </span>
+      <button type="button" id="btnEndGame" class="btn btn-danger">
+        Close Raffle
+      </button>
     </div>
   </div>
 </body>
