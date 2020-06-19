@@ -1,0 +1,40 @@
+name: Backend PR
+
+on:
+  pull-request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+env:
+  AZURE_FUNCTIONAPP_NAME: aoe2cg-fa
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/.'
+  DOTNET_VERSION: '3.1.201'
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: 'Checkout main'
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'dotnet build'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: drop
+          path: './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'

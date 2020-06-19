@@ -13,8 +13,8 @@ curl -sS -L https://github.com/twbs/bootstrap/releases/download/v4.5.0/bootstrap
 rm bootstrap.zip
 mv bootstrap-4.5.0-dist bootstrap
 
-# get jquery-3.3.1.min.js
-curl -sS https://code.jquery.com/jquery-3.3.1.min.js > jquery-3.3.1.min.js
+# get jquery-3.5.1.min.js
+curl -sS https://code.jquery.com/jquery-3.5.1.min.js > jquery-3.5.1.min.js
 
 # zip up this directory (except for this script)
 set +H
