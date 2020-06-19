@@ -9,7 +9,7 @@ Twitch panel extension to facilitate community games for Age of Empires II: Defi
 - [Twitch Extensions Helper/Reference](https://dev.twitch.tv/docs/extensions/reference)
 - [Azure Functions](https://azure.microsoft.com/en-us/services/functions/)
 - [Azure Cosmos Db](https://azure.microsoft.com/en-us/services/cosmos-db/)
-- [Semantic UI](https://semantic-ui.com/)
+- [Bootstrap](https://getbootstrap.com/)
 - [JQuery](https://jquery.com/)
 
 ## Development & Testing
@@ -18,7 +18,7 @@ Here's how I run and test this code on a Windows machine. Other OSs are probably
 
 ### Backend
 
-Follow the instructions [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code?pivots=programming-language-csharp) to get started with Azure Functions written in C#. 
+Read the [official documentation](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code?pivots=programming-language-csharp) to get started with Azure Functions written in C#.
 
 After you're set up, build the backend with:
 
@@ -29,13 +29,15 @@ dotnet build
 
 ### Frontend
 
-- Follow the instructions in the [Twitch Developer Documentation](https://dev.twitch.tv/docs/extensions) to create an extension and install the Developer Rig.
-- Run `package-frontend.sh` once to pull down the dependencies (or you can get them manually).
-- Connect the rig to the new extension and configure it to run the views in `/frontend`. If it's set up correctly, the views will display in the rig and the twitch helper events will fire.
+Read the [Twitch Developer Documentation](https://dev.twitch.tv/docs/extensions) to create an extension and install the Developer Rig.
+
+Run `package-frontend.sh` once to pull down the dependencies (or you can get them manually).
+
+Connect the rig to the new extension and configure it to run the views in `/frontend`. If it's set up correctly, the views will display in the rig and the twitch helper events will fire.
 
 ## Deployments
 
-This repo uses a [GitHub Actions workflow](/.github/workflows/publish-backend.yml) to do the build & publish to Azure.
+This repo uses a [GitHub Actions workflow](/.github/workflows/push-backend.yml) to do the build & publish to Azure.
 
 To deploy the frontend to Twitch, run `package-frontend.sh` then upload `frontend.zip` to the Files tab of the extension developer console page.
 

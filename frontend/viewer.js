@@ -13,7 +13,6 @@ const MESSAGES = {
 };
 
 var twitch = window.Twitch.ext;
-var subMult = 1;
 
 var requests = {
   checkStatus: createRequest('GET', 'CheckStatus', logSuccess, logError),
@@ -22,7 +21,8 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  if (context.theme === 'light') { // ugh
+  if (context.theme === 'light') {
+    // setVisibleDiv(DIVS.shame_digusting, DIVS);
     $('.segment').removeClass('dark-mode');
     $('.segment').addClass('light-mode');
   } else {
@@ -67,7 +67,6 @@ function checkStatus() {
 }
 
 function processCheckStatusResult(data) {
-  subMult = data.subMult;
   if (data.gameStatus === MESSAGES.gameStarted) {
     if (!data.registered) {
       setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
