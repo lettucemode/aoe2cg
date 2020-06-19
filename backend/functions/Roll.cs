@@ -110,6 +110,14 @@ namespace aoe2cg
                     jwt.ChannelId, winners.Select(w => w.opaqueUserId), "Winner", log);
             }
 
+
+
+
+
+
+
+
+
             var responseMessage = "Winners rolled: " + string.Join(",", winners.Select(w => w.opaqueUserId));
             responseMessage = responseMessage.TrimEnd(',');
             log.LogInformation(responseMessage);
