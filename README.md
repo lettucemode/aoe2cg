@@ -47,6 +47,10 @@ Many thanks to the [TwitchDev Discord](https://discord.com/invite/G8UQqNy) for a
 
 Thanks to [T90Official and his community](https://discord.gg/t90official) for being cool enough to inspire me to make this.
 
+## Support
+
+If you've gotten some value from this project and want to support it, feel free to throw me a few bucks on [Ko-Fi](https://ko-fi.com/lettucemode/).
+
 ## License
 
 MIT License - [LICENSE.md](LICENSE.md)
