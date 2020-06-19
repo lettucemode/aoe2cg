@@ -1,0 +1,25 @@
+name: Lint frontend
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build:
+    name: Lint frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ${{ github.head_ref }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Lintify!
+        uses: docker://github/super-linter:v2.0.0
+        env:
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_STANDARD: true
