@@ -11,6 +11,14 @@ namespace aoe2cg
         public bool winner { get; set; }
     }
 
+
+
+
+
+
+
+
+
     public class Game
     {
         public string id { get; set; }
