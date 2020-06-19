@@ -19,7 +19,8 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  if (context.theme === 'light') { // ugh
+  if (context.theme === 'light') {
+    // ugh
     $('.ui').removeClass('dark-mode');
     $('.ui').addClass('light-mode');
   } else {
