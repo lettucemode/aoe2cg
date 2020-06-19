@@ -9,11 +9,11 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: aoe2cg-fa
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/.'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend'
   DOTNET_VERSION: '3.1.201'
 
 jobs:
-  build-and-deploy:
+  build-and-upload:
     runs-on: windows-latest
     steps:
       - name: 'Checkout main'
