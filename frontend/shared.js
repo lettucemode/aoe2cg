@@ -44,3 +44,18 @@ function getExtVersion() {
   var matches = location.href.match(regex);
   return matches ? matches[0] : '1.0.0';
 }
+
+function setTheme(theme) {
+  if (theme === 'light') {
+    // setVisibleDiv(DIVS.shame_digusting, DIVS);
+    $('.row').addClass('light-mode');
+    $('.row').removeClass('dark-mode');
+    $('body').addClass('light-mode');
+    $('body').removeClass('dark-mode');
+  } else {
+    $('.row').addClass('dark-mode');
+    $('.row').removeClass('light-mode');
+    $('body').addClass('dark-mode');
+    $('body').removeClass('light-mode');
+  }
+}

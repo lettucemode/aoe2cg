@@ -21,14 +21,7 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  if (context.theme === 'light') {
-    // setVisibleDiv(DIVS.shame_digusting, DIVS);
-    $('.segment').removeClass('dark-mode');
-    $('.segment').addClass('light-mode');
-  } else {
-    $('.segment').removeClass('light-mode');
-    $('.segment').addClass('dark-mode');
-  }
+  setTheme(context.theme);
 });
 
 twitch.configuration.onChanged(function () {
@@ -40,6 +33,7 @@ twitch.onAuthorized(function (auth) {
   if (auth.userId.toString().startsWith('A')) {
     setVisibleDiv(DIVS.notLoggedIn, DIVS);
     removeLoadingSpinner();
+    twitch.unlisten('broadcast', handleBroadcast);
     return;
   }
 
@@ -93,6 +87,14 @@ function obtainTheForbiddenKnowledge() {
   $.ajax(req);
 }
 
+function handleBroadcast(targ, cType, message) {
+  if (message === MESSAGES.gameStarted) {
+    setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
+  } else if (message === MESSAGES.gameEnded) {
+    setVisibleDiv(DIVS.gameNotStarted, DIVS);
+  }
+}
+
 $(function () {
   $('#btnRegister').click(function () {
     $('#btnRegister').addClass('loading');
@@ -119,11 +121,5 @@ $(function () {
   });
 
   // listen for incoming EBS pubsubs
-  twitch.listen('broadcast', function (targ, cType, message) {
-    if (message === MESSAGES.gameStarted) {
-      setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
-    } else if (message === MESSAGES.gameEnded) {
-      setVisibleDiv(DIVS.gameNotStarted, DIVS);
-    }
-  });
+  twitch.listen('broadcast', handleBroadcast);
 });

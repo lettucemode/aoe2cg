@@ -19,13 +19,7 @@ var requests = {
 };
 
 twitch.onContext(function (context) {
-  if (context.theme === 'light') { // ugh
-    $('.ui').removeClass('dark-mode');
-    $('.ui').addClass('light-mode');
-  } else {
-    $('.ui').removeClass('light-mode');
-    $('.ui').addClass('dark-mode');
-  }
+  setTheme(context.theme);
 });
 
 twitch.configuration.onChanged(function () {
