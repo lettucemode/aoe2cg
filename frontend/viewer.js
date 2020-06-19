@@ -1,6 +1,7 @@
 const DIVS = {
   notLoggedIn: 'notLoggedIn',
   gameNotStarted: 'gameNotStarted',
+  identityShare: 'identityShare',
   clickToRegister: 'clickToRegister',
   waitingForWin: 'waitingForWin',
   forbiddenKnowledge: 'forbiddenKnowledge',
@@ -63,8 +64,7 @@ function processCheckStatusResult(data) {
   subMult = data.subMult;
   if (data.gameStatus === MESSAGES.gameStarted) {
     if (!data.registered) {
-      setVisibleDiv(DIVS.clickToRegister, DIVS);
-      configureRegisterScreen();
+      setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
     } else {
       setVisibleDiv(DIVS.waitingForWin, DIVS);
     }
@@ -72,27 +72,6 @@ function processCheckStatusResult(data) {
     setVisibleDiv(DIVS.gameNotStarted, DIVS);
   }
   removeLoadingSpinner();
-}
-
-function configureRegisterScreen() {
-  if (!twitch.viewer.isLinked) {
-    // change share identity button to teal and show explanatory text
-    $('#h5Identity').html(
-      'Subs get an entry bonus, and winners get their names in chat! Will you share your twitch identity so I can do that?'
-    );
-    $('#btnShareIdentity').removeClass('right labeled icon loading');
-    $('#btnShareIdentity').html('Yes, share identity');
-  } else {
-    // change share identity button to gray with check mark
-    if (twitch.viewer.subscriptionStatus && twitch.viewer.subscriptionStatus.tier) {
-      $('#h5Identity').html("Nice, you've got a " + subMult + 'x sub entry bonus!');
-    } else {
-      $('#h5Identity').html("You're all set!");
-    }
-    $('#btnShareIdentity').removeClass('teal');
-    $('#btnShareIdentity').addClass('gray right labeled icon');
-    $('#btnShareIdentity').html('<i class="check icon"></i> Identity Shared');
-  }
 }
 
 function obtainTheForbiddenKnowledge() {
@@ -137,7 +116,7 @@ $(function () {
   // listen for incoming EBS pubsubs
   twitch.listen('broadcast', function (targ, cType, message) {
     if (message === MESSAGES.gameStarted) {
-      setVisibleDiv(DIVS.clickToRegister, DIVS);
+      setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
     } else if (message === MESSAGES.gameEnded) {
       setVisibleDiv(DIVS.gameNotStarted, DIVS);
     }

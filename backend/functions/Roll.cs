@@ -97,7 +97,7 @@ namespace aoe2cg
                 // create & send chat message with winner names
                 var chatMessage = $"{winners.Count()} winner(s) rolled: " +
                     string.Join(", ", winners.Select(
-                        w => string.IsNullOrWhiteSpace(w.displayName) ? "unnamed" : w.displayName)) +
+                        w => string.IsNullOrWhiteSpace(w.displayName) ? "unknown" : w.displayName)) +
                     "! ";
                 if (chatMessage.Length < 230)
                 {

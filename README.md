@@ -83,6 +83,7 @@ plus whatever other environment settings you desire, then fetch them during runt
 
 ### Frontend
 
+- Run `package-frontend.sh` once to pull down the dependencies (or you can get them manually).
 - Follow the instructions in the [Twitch Developer Documentation](https://dev.twitch.tv/docs/extensions) to create an extension and install the Developer Rig.
 - Connect the rig to the new extension and configure it to run the views in `/frontend`. If it's set up correctly, the views will display in the rig and the twitch helper events will fire.
 
