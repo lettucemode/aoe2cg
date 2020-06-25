@@ -1,4 +1,4 @@
-var localtest = false; // set this to true when running backend locally
+var localtest = true; // set this to true when running backend locally
 
 function createRequest(method, endpoint, success, error) {
   return {
@@ -12,7 +12,7 @@ function createRequest(method, endpoint, success, error) {
   };
 }
 
-function setConfig(config, requests, localtest) {
+function setConfig(config, requests) {
   Object.keys(requests).forEach((req) => {
     requests[req].headers['x-functions-key'] = config['functionsAuthKey'];
     if (!localtest) requests[req].url = config['functionsBaseUrl'] + requests[req].endpoint;

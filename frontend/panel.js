@@ -4,6 +4,7 @@ const DIVS = {
   identityShare: 'identityShare',
   clickToRegister: 'clickToRegister',
   waitingForWin: 'waitingForWin',
+  confirmNotAfk: 'confirmNotAfk',
   forbiddenKnowledge: 'forbiddenKnowledge',
 };
 
@@ -40,7 +41,8 @@ twitch.onAuthorized(function (auth) {
   $('#btnShareIdentity').html('Share Account Details');
   twitch.listen('whisper-' + auth.userId, function (targ, cType, message) {
     if (message === 'Winner') {
-      obtainTheForbiddenKnowledge();
+      setVisibleDiv(DIVS.confirmNotAfk, DIVS);
+      //todo: notify broadcaster
     }
   });
   setAuth(auth.token, requests);
@@ -66,7 +68,7 @@ function processCheckStatusResult(data) {
     if (!data.registered) {
       setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
     } else if (data.winner) {
-      obtainTheForbiddenKnowledge();
+      setVisibleDiv(DIVS.confirmNotAfk, DIVS);
     } else {
       setVisibleDiv(DIVS.waitingForWin, DIVS);
     }
@@ -122,6 +124,19 @@ $(function () {
     $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     twitch.actions.requestIdShare();
   });
+
+  $('#btnConfirmYes').click(function () {
+    obtainTheForbiddenKnowledge();
+    //todo: notify broadcaster
+    //todo: log to db
+  });
+
+  if (localtest) {
+    $('#cheat').html('<button type="button" id="btnCheat" class="btn btn-info btn-sm" style="width: 122px;">CHEAT</button>');
+    $('#btnCheat').click(function () {
+      setVisibleDiv(DIVS.confirmNotAfk, DIVS);
+    });
+  }
 
   // listen for incoming EBS pubsubs
   twitch.listen('broadcast', handleBroadcast);

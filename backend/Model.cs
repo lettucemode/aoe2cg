@@ -9,6 +9,7 @@ namespace aoe2cg
         public bool isSubscriber { get; set; }
         public string gameId { get; set; }
         public bool winner { get; set; }
+        public bool confirmed { get; set; }
     }
 
     public class Game

@@ -140,6 +140,9 @@ $(function () {
   twitch.listen('broadcast', function (target, contentType, message) {
     if (message === MESSAGES.someoneRegistered) {
       incrementEntryCount();
+    } else if (message.startsWith('confirmed ')) {
+      var confirmedDisplayName = message.substring(10);
+      twitch.rig.log(message);
     }
   });
 });
