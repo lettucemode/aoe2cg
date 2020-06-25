@@ -65,6 +65,8 @@ function processCheckStatusResult(data) {
   if (data.gameStatus === MESSAGES.gameStarted) {
     if (!data.registered) {
       setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
+    } else if (data.winner) {
+      obtainTheForbiddenKnowledge();
     } else {
       setVisibleDiv(DIVS.waitingForWin, DIVS);
     }
@@ -80,8 +82,8 @@ function obtainTheForbiddenKnowledge() {
     logSuccess,
     (data) => {
       if (!data.success) return;
-      $('#txtLobbyId').text(data.lobbyId);
-      $('#txtLobbyPassword').text(data.lobbyPassword);
+      $('#txtLobbyId').val(data.lobbyId);
+      $('#txtLobbyPassword').val(data.lobbyPassword);
       setVisibleDiv(DIVS.forbiddenKnowledge, DIVS);
     },
   ];

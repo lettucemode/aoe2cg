@@ -48,8 +48,12 @@ function setTheme(theme) {
     // setVisibleDiv(DIVS.shame_digusting, DIVS);
     $('body').addClass('light-mode');
     $('body').removeClass('dark-mode');
+    $('li').addClass('light-mode');
+    $('li').removeClass('dark-mode');
   } else {
     $('body').addClass('dark-mode');
     $('body').removeClass('light-mode');
+    $('li').addClass('dark-mode');
+    $('li').removeClass('light-mode');
   }
 }
