@@ -4,6 +4,8 @@
   }
 
 .shared-mode {
+    border-width: 1px;
+    border-style: groove;
     font-size: .8em;
 }
 

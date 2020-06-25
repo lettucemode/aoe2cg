@@ -13,13 +13,13 @@
   <script src="shared.js" type="text/javascript"></script>
   <script src="panel.js" type="text/javascript"></script>
   <div class="container-fluid">
-    <div id="spinner" class="text-center mt-5">
+    <div id="spinner" class="text-center mt-5 mb-5">
       <div class="spinner-border" role="status"></div>
       <strong>Kicking the server...</strong>
     </div>
 
     <div id="notLoggedIn" hidden>
-      <div class="row m-1 mt-3">
+      <div class="row m-1 mt-3 mb-3">
         <span class="font-weight-bold">
           You need to be logged in to Twitch in order to join community games.
         </span>
@@ -27,7 +27,7 @@
     </div>
 
     <div id="gameNotStarted" hidden>
-      <div class="row m-1 mt-3">
+      <div class="row m-1 mt-3 mb-3">
         <span class="font-weight-bold">
           No community game raffles going on right now. Keep watching the stream for the next one!
         </span>
@@ -55,7 +55,7 @@
         </span>
       </div>
 
-      <div class="row m-1 justify-content-end">
+      <div class="row m-1 mt-2 mb-3 justify-content-end">
         <button type="button" id="btnShareIdentity" class="btn btn-info btn-sm" style="width: 182px;">
           Share Account Details
         </button>
@@ -86,7 +86,7 @@
         </span>
       </div>
 
-      <div class="row m-1 justify-content-end">
+      <div class="row m-1 mt-2 mb-3 justify-content-end">
         <button type="button" id="btnRegister" class="btn btn-info btn-sm" style="width: 122px;">
           Join Raffle
         </button>
@@ -96,7 +96,12 @@
     <div id="waitingForWin" hidden>
       <div class="row m-1 mt-3">
         <span class="font-weight-bold">
-          You're signed up! If you are selected, this panel will show you the lobby information you'll need to join.
+          You're signed up!
+        </span>
+      </div>
+      <div class="row m-1 mb-3">
+        <span class="font-weight-bold">
+          If you are selected, this panel will show you the lobby information you'll need to join.
           Cross your fingers!
         </span>
       </div>
@@ -109,7 +114,7 @@
         </span>
       </div>
 
-      <div class="row m-1">
+      <div class="row m-1 mt-2">
         <div class="input-group input-group-sm">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">Lobby Id</span>
@@ -129,7 +134,7 @@
         </div>
       </div>
 
-      <div class="row m-1">
+      <div class="row m-1 mt-2 mb-3">
         <span class="font-weight-bold">
           To join the game, search for the lobby ID in the multiplayer lobby browser in game. Join it and enter the
           password when prompted. Have fun!
