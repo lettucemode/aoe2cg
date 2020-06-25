@@ -37,6 +37,7 @@ twitch.onAuthorized(function (auth) {
     return;
   }
 
+  $('#btnShareIdentity').html('Share Account Details');
   twitch.listen('whisper-' + auth.userId, function (targ, cType, message) {
     if (message === 'Winner') {
       obtainTheForbiddenKnowledge();
@@ -97,7 +98,7 @@ function handleBroadcast(targ, cType, message) {
 
 $(function () {
   $('#btnRegister').click(function () {
-    $('#btnRegister').addClass('loading');
+    $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     var req = requests.register;
     req.data = JSON.stringify({
       isSubscriber: twitch.viewer.subscriptionStatus ? true : false,
@@ -107,7 +108,7 @@ $(function () {
       logSuccess,
       (data) => {
         if (!data.success) return;
-        $('#btnRegister').removeClass('loading');
+        $(this).html('Join Raffle');
         setVisibleDiv(DIVS.waitingForWin, DIVS);
       },
     ];
@@ -116,7 +117,7 @@ $(function () {
 
   $('#btnShareIdentity').click(function () {
     if (twitch.viewer.isLinked) return;
-    $('#btnShareIdentity').addClass('loading');
+    $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     twitch.actions.requestIdShare();
   });
 

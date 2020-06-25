@@ -64,22 +64,22 @@ function checkStatus() {
 
 function incrementEntryCount() {
   entryCount += 1;
-  $('#entryCount').text('Entries: ' + entryCount);
+  $('#entryCount').text(entryCount);
 }
 
 function setEntryCount(val) {
   entryCount = val;
-  $('#entryCount').text('Entries: ' + entryCount);
+  $('#entryCount').text(entryCount);
 }
 
 function resetEntryCount() {
   entryCount = 0;
-  $('#entryCount').text('Entries: ' + entryCount);
+  $('#entryCount').text(entryCount);
 }
 
 $(function () {
   $('#btnUpdateSettings').click(function () {
-    $('#btnUpdateSettings').addClass('loading');
+    $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     var req = requests.updateGameSettings;
     req.data = JSON.stringify({
       lobbyId: $('#txtLobbyId').val(),
@@ -90,9 +90,8 @@ $(function () {
     req.success = [
       logSuccess,
       () => {
-        $('#btnUpdateSettings').removeClass('loading');
         $('#btnRoll').removeClass('disabled');
-        $('#btnUpdateSettings').html('Update Settings');
+        $(this).html('Update Settings');
       },
     ];
     $.ajax(req);
@@ -100,7 +99,8 @@ $(function () {
 
   $('#btnRoll').click(function () {
     if ($('#txtNumToRoll').val() === '' || !$('#txtNumToRoll').val()) return;
-    $('#btnRoll').addClass('loading');
+    if ($(this).prop('disabled')) return;
+    $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     var req = requests.roll;
     req.data = JSON.stringify({
       numToRoll: $('#txtNumToRoll').val(),
@@ -109,14 +109,14 @@ $(function () {
     req.success = [
       logSuccess,
       () => {
-        $('#btnRoll').removeClass('loading');
+        $(this).html('Roll');
       },
     ];
     $.ajax(req);
   });
 
   $('#btnEndGame').click(function () {
-    $('#btnEndGame').addClass('loading');
+    $(this).html('<span class="spinner-border spinner-border-sm"></span>');
     var req = requests.endGame;
     req.data = JSON.stringify({
       extVersion: getExtVersion(),
@@ -124,11 +124,11 @@ $(function () {
     req.success = [
       logSuccess,
       () => {
+        $(this).html('Close Raffle');
         $('#btnUpdateSettings').html('Start Raffle');
         $('#txtLobbyId').val('');
         $('#txtLobbyPassword').val('');
         $('#numSubMult').val(1);
-        $('#btnEndGame').removeClass('loading');
         $('#btnRoll').addClass('disabled');
         resetEntryCount();
       },
