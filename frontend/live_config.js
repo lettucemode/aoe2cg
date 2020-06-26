@@ -9,6 +9,7 @@ const MESSAGES = {
 
 var twitch = window.Twitch.ext;
 var entryCount = 0;
+var winnersForStatusDisplay = [];
 
 var requests = {
   startthegamealready: createRequest('POST', 'StartTheGameAlready', logSuccess, logError),
@@ -54,6 +55,7 @@ function checkStatus() {
         setEntryCount(data.entryCount);
         $('#btnUpdateSettings').html('Update Settings');
         $('#btnRoll').removeClass('disabled');
+        addNewWinners(data.winners);
       }
       removeLoadingSpinner();
       $('#gameSettings').removeAttr('hidden');
@@ -75,6 +77,36 @@ function setEntryCount(val) {
 function resetEntryCount() {
   entryCount = 0;
   $('#entryCount').text(entryCount);
+}
+
+function addNewWinners(newWinners) {
+  $.each(newWinners, (i, v) => {
+    winnersForStatusDisplay.push({
+      displayName: v.displayName,
+      ouid: v.opaqueUserId,
+      confirmed: v.confirmed,
+    });
+  });
+  drawWinnerStatusDisplay();
+}
+
+function clearWinners() {
+  winnersForStatusDisplay = [];
+  drawWinnerStatusDisplay();
+}
+
+function drawWinnerStatusDisplay() {
+  $('#winnerStatusDisplay').empty();
+  $.each(winnersForStatusDisplay, (i, v) => {
+    $('#winnerStatusDisplay').append(
+      '<div class="row m-1">' +
+        '<button type="button" class="btn btn-sm ' + (v.confirmed ? "btn-success" : "btn-secondary") + '" style="font-size: .75em">' + 
+          v.displayName + ' ' + 
+          (v.confirmed ? '<img src="/bootstrap/icons/person-check-fill.svg" alt="" width="16" height="16">' : '<div class="spinner-border spinner-border-sm"></div>') +
+        '</button>' +
+      '</div>'
+    );
+  });
 }
 
 $(function () {
@@ -108,8 +140,11 @@ $(function () {
     });
     req.success = [
       logSuccess,
-      () => {
+      (data) => {
         $(this).html('Roll');
+        if (!data.success) return;
+        var newWinners = JSON.parse(data.winners);
+        addNewWinners(newWinners);
       },
     ];
     $.ajax(req);
@@ -131,6 +166,7 @@ $(function () {
         $('#numSubMult').val(1);
         $('#btnRoll').addClass('disabled');
         resetEntryCount();
+        clearWinners();
       },
     ];
     $.ajax(requests.endGame);
@@ -141,8 +177,13 @@ $(function () {
     if (message === MESSAGES.someoneRegistered) {
       incrementEntryCount();
     } else if (message.startsWith('confirmed ')) {
-      var confirmedDisplayName = message.substring(10);
-      twitch.rig.log(message);
+      var confirmedOpaqueId = message.substring(10);
+      $.each(winnersForStatusDisplay, (i, v) => {
+        if (v.ouid === confirmedOpaqueId) {
+          v.confirmed = true;
+        }
+      });
+      drawWinnerStatusDisplay();
     }
   });
 });

@@ -33,11 +33,20 @@ namespace aoe2cg
                 result.winner = userReg != null ? userReg.winner : false;
                 result.subMult = activeGame.subscriberMultiplier;
 
+                // send extra info to the broadcaster
                 if (jwt.Role == "broadcaster")
                 {
                     result.lobbyId = activeGame.lobbyId;
                     result.lobbyPassword = activeGame.lobbyPassword;
                     result.entryCount = gameRegs.Count;
+                    result.winners = gameRegs.Where(gr => gr.winner)
+                                             .Select(w => new Winner
+                                             {
+                                                 displayName = w.displayName,
+                                                 opaqueUserId = w.opaqueUserId,
+                                                 confirmed = w.confirmed
+                                             })
+                                             .ToArray();
                 }
             }
 
@@ -53,6 +62,7 @@ namespace aoe2cg
             public string lobbyPassword { get; set; }
             public int subMult { get; set; }
             public int entryCount { get; set; }
+            public Winner[] winners { get; set; }
             public StatusResult()
             {
                 gameStatus = GameState.Ended.ToString();
@@ -61,7 +71,16 @@ namespace aoe2cg
                 lobbyId = string.Empty;
                 lobbyPassword = string.Empty;
                 subMult = 1;
+                entryCount = 0;
+                winners = new Winner[] { };
             }
+        }
+
+        private class Winner
+        {
+            public string displayName { get; set; }
+            public string opaqueUserId { get; set; }
+            public bool confirmed { get; set; }
         }
     }
 }

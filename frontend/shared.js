@@ -1,4 +1,4 @@
-var localtest = false; // set this to true when running backend locally
+var localtest = true; // set this to true when running backend locally
 
 function createRequest(method, endpoint, success, error) {
   return {

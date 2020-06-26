@@ -60,9 +60,7 @@
         </div>
       </div>
 
-      <div class="row m-1">&nbsp;</div>
-
-      <div class="row m-1">
+      <div class="row m-1 mt-3">
         <span class="font-weight-bold">
           Roll for winners here. You can roll more than once.
         </span>
@@ -78,14 +76,18 @@
           <input id="txtNumToRoll" type="number" class="form-control" aria-label="Roll" placeholder="# to roll" min="1"
             max="999" />
           <div class="input-group-append">
-            <button id="btnRoll" class="btn btn-info" type="roll" style="width: 78px;">Roll</button>
+            <button id="btnRoll" class="btn btn-info" type="roll" style="width: 85px;">Roll</button>
           </div>
         </div>
       </div>
+      <div class="row m-1 mt-2 mb-0">
+        <span class="font-weight-bold">
+          Winner confirmations:
+        </span>
+      </div>
+      <div id="winnerStatusDisplay" class="row m-2">No winners yet</div>
 
-      <div class="row m-1">&nbsp;</div>
-
-      <div class="row m-1">
+      <div class="row m-1 mt-3">
         <span class="font-weight-bold">
           Close the raffle here after the match is underway.
         </span>

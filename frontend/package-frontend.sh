@@ -7,6 +7,12 @@ curl -sS -L https://github.com/twbs/bootstrap/releases/download/v4.5.0/bootstrap
 rm bootstrap.zip
 mv bootstrap-4.5.0-dist bootstrap
 
+# get bootstrap icons
+curl -sS -L https://github.com/twbs/icons/releases/download/v1.0.0-alpha4/bootstrap-icons-1.0.0-alpha4.zip > icons.zip
+7z x icons.zip
+rm icons.zip
+mv bootstrap-icons-1.0.0-alpha4 ./bootstrap/icons
+
 # get jquery-3.5.1.min.js
 curl -sS https://code.jquery.com/jquery-3.5.1.min.js > jquery-3.5.1.min.js
 

@@ -105,7 +105,7 @@ namespace aoe2cg
                 }
                 await this._twitchService.SendChannelChatMessage(jwt.ChannelId, chatMessage, extVersion, log);
 
-                // notify winner frontends to fetch game info
+                // notify winner frontends
                 await this._twitchService.SendPubSubWhisper(
                     jwt.ChannelId, winners.Select(w => w.opaqueUserId), "Winner", log);
             }
@@ -118,6 +118,7 @@ namespace aoe2cg
             {
                 success = true,
                 message = responseMessage,
+                winners = new JsonNetSerializer().Serialize(winners.Select(w => new { w.displayName, w.opaqueUserId, confirmed = false })),
             });
         }
     }

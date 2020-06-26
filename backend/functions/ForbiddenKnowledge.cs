@@ -48,7 +48,7 @@ namespace aoe2cg
             // save that they acknowledged they weren't afk and notify broadcaster
             userReg.confirmed = true;
             await this.SaveRegistration(userReg);
-            await _twitchService.SendPubSubBroadcast(jwt.ChannelId, $"confirmed {userReg.displayName}", log);
+            await _twitchService.SendPubSubBroadcast(jwt.ChannelId, $"confirmed {userReg.opaqueUserId}", log);
 
             // give them what they desire
             var responseMessage = $"Sending knowledge to user {jwt.OpaqueUserId}.";
