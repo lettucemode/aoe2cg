@@ -29,9 +29,10 @@ namespace aoe2cg
                 var gameRegs = await this.GetRegistrations(activeGame.id);
                 var userReg = gameRegs.FirstOrDefault(r => r.opaqueUserId == jwt.OpaqueUserId);
                 result.gameStatus = activeGame.gameState;
+                result.subMult = activeGame.subscriberMultiplier;
                 result.registered = userReg != null;
                 result.winner = userReg != null ? userReg.winner : false;
-                result.subMult = activeGame.subscriberMultiplier;
+                result.confirmed = userReg != null ? userReg.confirmed : false;
 
                 // send extra info to the broadcaster
                 if (jwt.Role == "broadcaster")
@@ -48,6 +49,13 @@ namespace aoe2cg
                                              })
                                              .ToArray();
                 }
+
+                // if viewer already won AND confirmed, send them the game info
+                if (result.winner && result.confirmed)
+                {
+                    result.lobbyId = activeGame.lobbyId;
+                    result.lobbyPassword = activeGame.lobbyPassword;
+                }
             }
 
             return new OkObjectResult(result);
@@ -63,6 +71,7 @@ namespace aoe2cg
             public int subMult { get; set; }
             public int entryCount { get; set; }
             public Winner[] winners { get; set; }
+            public bool confirmed { get; set; }
             public StatusResult()
             {
                 gameStatus = GameState.Ended.ToString();
@@ -73,6 +82,7 @@ namespace aoe2cg
                 subMult = 1;
                 entryCount = 0;
                 winners = new Winner[] { };
+                confirmed = false;
             }
         }
 

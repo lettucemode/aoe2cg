@@ -273,3 +273,6 @@ frontend/jquery*.js
 
 # any .zip left hanging around from uploading frontend files to Twitch
 *.zip
+
+# misc
+*.txt

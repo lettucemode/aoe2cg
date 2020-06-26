@@ -41,8 +41,7 @@ twitch.onAuthorized(function (auth) {
   $('#btnShareIdentity').html('Share Account Details');
   twitch.listen('whisper-' + auth.userId, function (targ, cType, message) {
     if (message === 'Winner') {
-      setVisibleDiv(DIVS.confirmNotAfk, DIVS);
-      //todo: notify broadcaster
+      checkStatus();
     }
   });
   setAuth(auth.token, requests);
@@ -68,7 +67,13 @@ function processCheckStatusResult(data) {
     if (!data.registered) {
       setVisibleDiv(twitch.viewer.isLinked ? DIVS.clickToRegister : DIVS.identityShare, DIVS);
     } else if (data.winner) {
-      setVisibleDiv(DIVS.confirmNotAfk, DIVS);
+      if (data.confirmed) {
+        $('#txtLobbyId').val(data.lobbyId);
+        $('#txtLobbyPassword').val(data.lobbyPassword);
+        setVisibleDiv(DIVS.forbiddenKnowledge, DIVS);
+      } else {
+        setVisibleDiv(DIVS.confirmNotAfk, DIVS);
+      }
     } else {
       setVisibleDiv(DIVS.waitingForWin, DIVS);
     }
@@ -127,10 +132,10 @@ $(function () {
 
   $('#btnConfirmYes').click(function () {
     obtainTheForbiddenKnowledge();
-    //todo: notify broadcaster
-    //todo: log to db
   });
 
+  // this is here because the developer rig doesn't receive the whiser-userId pubsub broadcasts for some reason
+  // so we gotta hack in a way to advance to the next screen for testing purposes
   if (localtest) {
     $('#cheat').html('<button type="button" id="btnCheat" class="btn btn-info btn-sm" style="width: 122px;">CHEAT</button>');
     $('#btnCheat').click(function () {
