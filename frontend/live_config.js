@@ -102,7 +102,7 @@ function drawWinnerStatusDisplay() {
       '<div class="row m-1">' +
         '<button type="button" class="btn btn-sm ' + (v.confirmed ? "btn-success" : "btn-secondary") + '" style="font-size: .75em">' + 
           v.displayName + ' ' + 
-          (v.confirmed ? '<img src="/bootstrap/icons/person-check-fill.svg" alt="" width="16" height="16">' : '<div class="spinner-border spinner-border-sm"></div>') +
+          (v.confirmed ? '<img src="bootstrap/icons/person-check-fill.svg" alt="" width="16" height="16">' : '<div class="spinner-border spinner-border-sm"></div>') +
         '</button>' +
       '</div>'
     );
