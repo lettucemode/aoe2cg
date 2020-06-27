@@ -93,6 +93,7 @@ function addNewWinners(newWinners) {
 function clearWinners() {
   winnersForStatusDisplay = [];
   drawWinnerStatusDisplay();
+  $('#winnerStatusDisplay').html("No winners yet");
 }
 
 function drawWinnerStatusDisplay() {
