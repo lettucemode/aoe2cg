@@ -5,6 +5,10 @@ This is a Twitch panel extension to facilitate community games for Age of Empire
 ![Deploy ARM Template](https://github.com/lettucemode/aoe2cg/workflows/Deploy%20ARM%20Template/badge.svg)
 ![Build & Deploy Backend](https://github.com/lettucemode/aoe2cg/workflows/Build%20&%20Deploy%20Backend/badge.svg)
 
+Here's some links with more information on how it works:
+- [Extension discovery page on Twitch](https://dashboard.twitch.tv/extensions/9cwq8civy57ul3ir5vlodpl4v1871f)
+- [Video on how it works](https://www.youtube.com/watch?v=z-CpDm-lbQw)
+
 ## Built With
 
 - [Twitch Extensions Helper/Reference](https://dev.twitch.tv/docs/extensions/reference)
