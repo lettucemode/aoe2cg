@@ -1,0 +1,33 @@
+name: Deploy ARM Template
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deployArmTemplate.yml'
+      - 'templates/azuredeploy.json'
+
+env:
+  AZURE_RG_NAME: aoe2cg
+
+jobs:
+  deploy-arm-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
+
+
+      - name: Deploy ARM Template
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create --resource-group ${{ env.AZURE_RG_NAME }} --template-file ./templates/azuredeploy.json --parameters '${{ secrets.ARM_TEMPLATE_PARAMETERS }}'

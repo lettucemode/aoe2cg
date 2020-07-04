@@ -1,0 +1,352 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {        
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "storageAccount_name": {
+            "type": "string",
+            "defaultValue": "storageAccount",
+            "metadata": {
+                "description": "Name of the storage account."
+            }
+        },
+        "appServicePlan_name": {
+            "type": "string",
+            "defaultValue": "appServicePlan", 
+            "metadata": {
+                "description": "Name of the app service plan."
+            }
+        },
+        "cosmosDbAccount_name": {
+            "type": "string",
+            "defaultValue": "cosmosDbAccount",
+            "metadata": {
+                "description": "Name of the cosmos db account."
+            }
+        },
+        "cosmosDbAccount_dbName": {
+            "type": "string",
+            "defaultValue": "dbName",
+            "metadata": {
+                "description": "Name of the cosmos db sql database."
+            }
+        },
+        "functionApp_name": {
+            "type": "string",
+            "defaultValue": "functionApp",
+            "metadata": {
+                "description": "Name of the function app."
+            }
+        },
+        "twitchExtension_clientId": {
+            "type": "string",
+            "defaultValue": "clientId",
+            "metadata": {
+                "description": "Twitch extension client id (can be found at the top of the extension overview page)."
+            }
+        },
+        "twitchExtension_clientSecret": {
+            "type": "string",
+            "defaultValue": "clientSecret",
+            "metadata": {
+                "description": "Twitch extension client secret (can be generated from the extension settings page)."
+            }
+        },
+        "twitchExtension_ownerId": {
+            "type": "string",
+            "defaultValue": "ownerId",
+            "metadata": {
+                "description": "Twitch extension owner id (twitch user id of the extension creator, can be obtained from the developer rig)."
+            }
+        },
+        "twitchExtension_extensionSecret": {
+            "type": "string",
+            "defaultValue": "extensionSecret",
+            "metadata": {
+                "description": "Twitch extension secret (can be generated from the extension settings page)."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "storageAccount_name": "[parameters('storageAccount_name')]",
+        "appServicePlan_name": "[parameters('appServicePlan_name')]",
+        "functionApp_name": "[parameters('functionApp_name')]",
+        "cosmosDbAccount_name": "[parameters('cosmosDbAccount_name')]",
+        "cosmosDbAccount_dbName": "[parameters('cosmosDbAccount_dbName')]",
+        "twitchExtension_clientId": "[parameters('twitchExtension_clientId')]",
+        "twitchExtension_clientSecret": "[parameters('twitchExtension_clientSecret')]",
+        "twitchExtension_ownerId": "[parameters('twitchExtension_ownerId')]",
+        "twitchExtension_extensionSecret": "[parameters('twitchExtension_extensionSecret')]"
+    },
+    "resources": [
+        {
+            "name": "[variables('storageAccount_name')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "tags": {
+                "displayName": "[variables('storageAccount_name')]"
+            },
+            "location": "[parameters('location')]",
+            "kind": "Storage",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            }
+        },
+        {
+            "name": "[variables('cosmosDbAccount_name')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]",
+            "tags": {
+                "defaultExperience": "Core (SQL)",
+                "hidden-cosmos-mmspecial": "",
+                "CosmosAccountType": "Non-Production"
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxStalenessPrefix": 5,
+                    "maxIntervalInSeconds": 100
+                },
+                "enableFreeTier": true,
+                "locations": [
+                    {
+                        "locationName": "[parameters('location')]",
+                        "failoverPriority": 0
+                    }
+                ],
+                "databaseAccountOfferType": "Standard",
+                "enableAutomaticFailover": false
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+                    "apiVersion": "2020-04-01",
+                    "name": "[concat(variables('cosmosDbAccount_name'), '/', variables('cosmosDbAccount_dbName'))]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name'))]"
+                    ],
+                    "properties": {
+                        "resource": {
+                            "id": "[variables('cosmosDbAccount_dbName')]"
+                        },
+                        "options": {
+                            "throughput": 400
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+                            "apiVersion": "2020-04-01",
+                            "name": "[concat(variables('cosmosDbAccount_name'), '/', variables('cosmosDbAccount_dbName'), '/games')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccount_name'), variables('cosmosDbAccount_dbName'))]",
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name'))]"
+                            ],
+                            "properties": {
+                                "resource": {
+                                    "id": "games",
+                                    "indexingPolicy": {
+                                        "indexingMode": "consistent",
+                                        "automatic": true,
+                                        "includedPaths": [
+                                            {
+                                                "path": "/*"
+                                            }
+                                        ],
+                                        "excludedPaths": [
+                                            {
+                                                "path": "/\"_etag\"/?"
+                                            }
+                                        ]
+                                    },
+                                    "partitionKey": {
+                                        "paths": [
+                                            "/id"
+                                        ],
+                                        "kind": "Hash"
+                                    },
+                                    "uniqueKeyPolicy": {
+                                        "uniqueKeys": []
+                                    },
+                                    "conflictResolutionPolicy": {
+                                        "mode": "LastWriterWins",
+                                        "conflictResolutionPath": "/_ts"
+                                    }
+                                },
+                                "options": {}
+                            }
+                        },
+                        {
+                            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+                            "apiVersion": "2020-04-01",
+                            "name": "[concat(variables('cosmosDbAccount_name'), '/', variables('cosmosDbAccount_dbName'), '/registrations')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccount_name'), variables('cosmosDbAccount_dbName'))]",
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name'))]"
+                            ],
+                            "properties": {
+                                "resource": {
+                                    "id": "registrations",
+                                    "indexingPolicy": {
+                                        "indexingMode": "consistent",
+                                        "automatic": true,
+                                        "includedPaths": [
+                                            {
+                                                "path": "/*"
+                                            }
+                                        ],
+                                        "excludedPaths": [
+                                            {
+                                                "path": "/\"_etag\"/?"
+                                            }
+                                        ]
+                                    },
+                                    "partitionKey": {
+                                        "paths": [
+                                            "/id"
+                                        ],
+                                        "kind": "Hash"
+                                    },
+                                    "uniqueKeyPolicy": {
+                                        "uniqueKeys": []
+                                    },
+                                    "conflictResolutionPolicy": {
+                                        "mode": "LastWriterWins",
+                                        "conflictResolutionPath": "/_ts"
+                                    }
+                                },
+                                "options": {}
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[variables('functionApp_name')]",
+            "location": "[parameters('location')]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Request_Source": "rest",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "name": "[variables('appServicePlan_name')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "tags": {
+                "displayName": "[variables('appServicePlan_name')]"
+            },
+            "properties": {
+                "name": "[variables('appServicePlan_name')]",
+                "computeMode": "Dynamic"
+            }
+        },
+        {
+            "name": "[variables('functionApp_name')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "location": "[parameters('location')]",
+            "kind": "functionapp",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount_name'))]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlan_name'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId('microsoft.insights/components/', variables('functionApp_name')), '2015-05-01').InstrumentationKey]"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount_name'), ';AccountKey=', first(listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount_name')), '2019-06-01').keys).value)]"
+                        },
+                        {
+                            "name": "ClientSecret",
+                            "value": "[variables('twitchExtension_clientSecret')]"
+                        },
+                        {
+                            "name": "CosmosConnectionString",
+                            "value": "[first(listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name')), '2020-04-01').connectionStrings).connectionString]"
+                        },
+                        {
+                            "name": "CosmosDbName",
+                            "value": "[variables('cosmosDbAccount_dbName')]"
+                        },
+                        {
+                            "name": "ExtensionClientId",
+                            "value": "[variables('twitchExtension_clientId')]"
+                        },
+                        {
+                            "name": "ExtensionOwnerId",
+                            "value": "[variables('twitchExtension_ownerId')]"
+                        },
+                        {
+                            "name": "ExtensionSecret",
+                            "value": "[variables('twitchExtension_extensionSecret')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "dotnet"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount_name'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',first(listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount_name')), '2019-06-01').keys).value)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(variables('functionApp_name'))]"
+                        },
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        }
+                    ],                    
+                    "cors": {
+                        "allowedOrigins": [
+                            "[concat('https://', variables('twitchExtension_clientId'), '.ext-twitch.tv')]"
+                        ],
+                        "supportCredentials": false
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

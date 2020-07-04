@@ -1,0 +1,41 @@
+name: Backend PR validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pr-backend.yml'
+      - 'backend/**'
+
+env:
+  AZURE_FUNCTIONAPP_NAME: aoe2cg-fa
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend'
+  DOTNET_VERSION: '3.1.201'
+
+jobs:
+  build-and-upload:
+    runs-on: windows-latest
+    steps:
+      - name: 'Checkout ${{ github.head_ref }}'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'dotnet build'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: drop
+          path: './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
