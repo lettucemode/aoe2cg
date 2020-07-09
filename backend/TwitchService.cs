@@ -151,13 +151,12 @@ namespace aoe2cg
             }
         }
 
-        public async Task<TwitchUser> GetUserHelix(string realUserId, ILogger log)
+        public async Task<TwitchUser> GetUserHelix(string realUserId, string appAccessToken, ILogger log)
         {
-            var appAccessToken = await this.GetAppAccessToken(log);
             using var request = new HttpRequestMessage(
                 HttpMethod.Get, $"https://api.twitch.tv/helix/users?id={realUserId}");
             request.Headers.Add("Client-ID", this._extClientId);
-            request.Headers.Add("Authorization", BEARER_PREFIX + appAccessToken.access_token);
+            request.Headers.Add("Authorization", BEARER_PREFIX + appAccessToken);
 
             using var client = new HttpClient();
             using var response = await client.SendAsync(request);
@@ -194,28 +193,7 @@ namespace aoe2cg
             log.LogInformation($"Send chat message result: {response.StatusCode}.");
         }
 
-        private string MakePubSubToken(string channelId, bool isWhisper, ILogger log)
-        {
-            var perms = new perms { send = new string[] { isWhisper ? "whisper-*" : "*" } };
-            var payload = new Dictionary<string, object>
-            {
-                { "exp", (DateTimeOffset.Now.ToUnixTimeSeconds() + 60) },
-                { "user_id", this._extOwnerId },
-                { "role", "external" },
-                { "channel_id", channelId },
-                { "pubsub_perms", perms }
-            };
-            log.LogInformation(new JsonNetSerializer().Serialize(payload));
-
-            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
-            IJsonSerializer serializer = new JsonNetSerializer();
-            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
-            var token = encoder.Encode(payload, Convert.FromBase64String(this._extSecret));
-            return token;
-        }
-
-        private async Task<AppAccessToken> GetAppAccessToken(ILogger log)
+        public async Task<AppAccessToken> GetAppAccessToken(ILogger log)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post,
                 $"https://id.twitch.tv/oauth2/token?" +
@@ -235,6 +213,27 @@ namespace aoe2cg
 
             var appAccessToken = new JsonNetSerializer().Deserialize<AppAccessToken>(responseBody);
             return appAccessToken;
+        }
+
+        private string MakePubSubToken(string channelId, bool isWhisper, ILogger log)
+        {
+            var perms = new perms { send = new string[] { isWhisper ? "whisper-*" : "*" } };
+            var payload = new Dictionary<string, object>
+            {
+                { "exp", (DateTimeOffset.Now.ToUnixTimeSeconds() + 60) },
+                { "user_id", this._extOwnerId },
+                { "role", "external" },
+                { "channel_id", channelId },
+                { "pubsub_perms", perms }
+            };
+            log.LogInformation(new JsonNetSerializer().Serialize(payload));
+
+            IJwtAlgorithm algorithm = new HMACSHA256Algorithm();
+            IJsonSerializer serializer = new JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
+            var token = encoder.Encode(payload, Convert.FromBase64String(this._extSecret));
+            return token;
         }
     }
 

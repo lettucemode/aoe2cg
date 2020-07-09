@@ -227,6 +227,48 @@
                                 },
                                 "options": {}
                             }
+                        },
+                        {
+                            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+                            "apiVersion": "2020-04-01",
+                            "name": "[concat(variables('cosmosDbAccount_name'), '/', variables('cosmosDbAccount_dbName'), '/tokens')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccount_name'), variables('cosmosDbAccount_dbName'))]",
+                                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccount_name'))]"
+                            ],
+                            "properties": {
+                                "resource": {
+                                    "id": "tokens",
+                                    "indexingPolicy": {
+                                        "indexingMode": "consistent",
+                                        "automatic": true,
+                                        "includedPaths": [
+                                            {
+                                                "path": "/*"
+                                            }
+                                        ],
+                                        "excludedPaths": [
+                                            {
+                                                "path": "/\"_etag\"/?"
+                                            }
+                                        ]
+                                    },
+                                    "partitionKey": {
+                                        "paths": [
+                                            "/id"
+                                        ],
+                                        "kind": "Hash"
+                                    },
+                                    "uniqueKeyPolicy": {
+                                        "uniqueKeys": []
+                                    },
+                                    "conflictResolutionPolicy": {
+                                        "mode": "LastWriterWins",
+                                        "conflictResolutionPath": "/_ts"
+                                    }
+                                },
+                                "options": {}
+                            }
                         }
                     ]
                 }

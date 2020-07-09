@@ -126,6 +126,26 @@ namespace aoe2cg
             return winners;
         }
 
+        private async Task<Token> GetStoredToken()
+        {
+            var query = new QueryDefinition("select * from tokens t ");
+            var resultSet = this.Tokens().GetItemQueryIterator<Token>(
+                query,
+                requestOptions: new QueryRequestOptions
+                {
+                    MaxItemCount = 1,
+                });
+
+            Token tok = null;
+            while (resultSet.HasMoreResults)
+            {
+                var response = await resultSet.ReadNextAsync();
+                tok = response.FirstOrDefault();
+                if (tok != null) break;
+            }
+            return tok;
+        }
+
         private async Task SaveGame(Game game)
         {
             if (string.IsNullOrWhiteSpace(game.id)) game.id = Guid.NewGuid().ToString();
@@ -138,6 +158,12 @@ namespace aoe2cg
             await this.Registrations().UpsertItemAsync(reg);
         }
 
+        private async Task SaveToken(Token tok)
+        {
+            if (string.IsNullOrWhiteSpace(tok.id)) tok.id = Guid.NewGuid().ToString();
+            await this.Tokens().UpsertItemAsync(tok);
+        }
+
         private Container Games()
         {
             return this._cosmosClient.GetContainer(this._cosmosDbName, "games");
@@ -146,6 +172,11 @@ namespace aoe2cg
         private Container Registrations()
         {
             return this._cosmosClient.GetContainer(this._cosmosDbName, "registrations");
+        }
+
+        private Container Tokens()
+        {
+            return this._cosmosClient.GetContainer(this._cosmosDbName, "tokens");
         }
     }
 }

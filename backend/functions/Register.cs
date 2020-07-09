@@ -75,7 +75,8 @@ namespace aoe2cg
             };
             if (!string.IsNullOrWhiteSpace(realUserId))
             {
-                var twitchUser = await this._twitchService.GetUserHelix(realUserId, log);
+                var storedToken = await this.GetStoredToken();
+                var twitchUser = await this._twitchService.GetUserHelix(realUserId, storedToken.appAccessToken, log);
                 newReg.displayName = twitchUser?.display_name;
             }
             await this.SaveRegistration(newReg);
