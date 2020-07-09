@@ -27,4 +27,10 @@ namespace aoe2cg
         public static string Active = "Active";
         public static string Ended = "Ended";
     }
+
+    public class Token
+    {
+        public string id { get; set; }
+        public string appAccessToken { get; set; }
+    }
 }
