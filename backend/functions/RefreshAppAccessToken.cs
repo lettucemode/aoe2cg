@@ -8,7 +8,7 @@ namespace aoe2cg
     {
         [FunctionName("RefreshAppAccessToken")]
         public async Task RefreshAppAccessToken(
-            [TimerTrigger("0 0 6 * * *")] TimerInfo timer,
+            [TimerTrigger("0 0 6 * * *", RunOnStartup = false)] TimerInfo timer,
             ILogger log)
         {
             log.LogInformation("Refreshing app access token...");

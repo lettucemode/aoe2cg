@@ -1,0 +1,15 @@
+<button
+  type="button"
+  [ngClass]="{
+    btn: true,
+    'btn-sm': true,
+    'cool-button': true,
+    'btn-info': !config.danger,
+    'btn-danger': config.danger
+  }"
+  [ngStyle]="{ width: config.small ? '85px' : '128px', 'font-size': config.isVideoComponent ? '4vw' : '1em' }"
+  (click)="doClick()"
+>
+  {{ waiting ? "" : config.buttonText }}
+  <span *ngIf="waiting" class="spinner-border spinner-border-sm"></span>
+</button>

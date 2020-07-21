@@ -7,10 +7,12 @@ on:
     paths:
       - '.github/workflows/push-backend.yml'
       - 'backend/**'
+      - 'templates/azuredeploy.json'
 
 env:
   AZURE_FUNCTIONAPP_NAME: aoe2cg-fa
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/.'
+  AZURE_RG_NAME: aoe2cg
   DOTNET_VERSION: '3.1.201'
 
 jobs:
@@ -21,6 +23,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: main
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
+
+      - name: Deploy ARM Template
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az deployment group create --resource-group ${{ env.AZURE_RG_NAME }} --template-file ./templates/azuredeploy.json --parameters '${{ secrets.ARM_TEMPLATE_PARAMETERS }}'
 
       - name: Install dotnet SDK ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v1

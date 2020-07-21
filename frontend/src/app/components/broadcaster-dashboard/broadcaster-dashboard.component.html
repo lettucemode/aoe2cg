@@ -1,0 +1,122 @@
+<div class="container-fluid component-wrapper broadcaster-font">
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <div *ngIf="!loading" id="gameSettings">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        Start a new raffle or update settings here. Already-rolled winners will get updates.
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Lobby Id</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="lobbyId"
+          aria-label="Lobby Id"
+          aria-describedby="basic-addon1"
+        />
+      </div>
+    </div>
+
+    <div class="row m-1">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon2">Lobby Password</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="lobbyPassword"
+          aria-label="Lobby Password"
+          aria-describedby="basic-addon2"
+        />
+      </div>
+    </div>
+
+    <div class="row m-1">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Sub Bonus</span>
+        </div>
+        <input
+          type="number"
+          class="form-control"
+          id="numSubMult"
+          min="1"
+          max="999"
+          [(ngModel)]="subMult"
+          aria-label="Sub Multiplier"
+          aria-describedby="basic-addon3"
+        />
+        <div class="input-group-append">
+          <app-cool-button
+            (clicked)="onUpdateSettings()"
+            [config]="{ buttonText: updateSettingsButtonText }"
+            [waiting]="updateWaiting"
+          ></app-cool-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        Roll for winners here. You can roll more than once.
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            Entries: <span id="entryCount" class="badge">{{ entryCount }}</span>
+          </span>
+        </div>
+        <input
+          id="txtNumToRoll"
+          type="number"
+          class="form-control"
+          aria-label="Roll"
+          placeholder="# to roll"
+          min="1"
+          max="999"
+          [(ngModel)]="numToRoll"
+        />
+        <div class="input-group-append">
+          <app-cool-button
+            (clicked)="onRoll()"
+            [config]="{ buttonText: 'Roll', small: true }"
+            [waiting]="rollWaiting"
+          ></app-cool-button>
+        </div>
+      </div>
+    </div>
+    <div class="row m-1 mt-2 mb-0">
+      <span class="font-weight-bold">
+        Winner confirmations:
+      </span>
+    </div>
+    <div id="winnerStatusDisplay" class="row m-2">
+      <div *ngIf="winnerConfirmations.length == 0">No winners yet</div>
+      <app-winner-status *ngFor="let winner of winnerConfirmations" [winner]="winner"></app-winner-status>
+    </div>
+
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        Close the raffle here after the match is underway.
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2 mb-2 justify-content-end">
+      <app-cool-button
+        (clicked)="onEndGame()"
+        [config]="{ buttonText: 'Close Raffle', danger: true }"
+        [waiting]="endWaiting"
+      ></app-cool-button>
+    </div>
+  </div>
+</div>

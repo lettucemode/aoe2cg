@@ -1,4 +1,4 @@
-name: Backend PR validation
+name: Backend build validation
 
 on:
   pull_request:

@@ -1,0 +1,161 @@
+<div
+  [ngClass]="{
+    'container-fluid': true,
+    'component-wrapper': true,
+    'panel-font': !isVideoComponent,
+    'video-component-font': isVideoComponent
+  }"
+  [ngSwitch]="panelState"
+>
+  <app-spinner *ngSwitchCase="PanelState.Loading"></app-spinner>
+
+  <div *ngSwitchCase="PanelState.NotLoggedIn">
+    <div class="row m-1 mt-3 mb-3">
+      <span class="font-weight-bold">
+        You need to be logged in to Twitch in order to join community games.
+      </span>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="PanelState.GameNotStarted">
+    <div class="row m-1 mt-3 mb-3">
+      <span class="font-weight-bold">
+        No community game raffles going on right now. Keep watching the stream for the next one!
+      </span>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="PanelState.IdentityShare">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        A game is starting!
+      </span>
+    </div>
+
+    <div class="row m-1">
+      <span class="font-weight-bold">
+        To join the raffle, please click the button below so I can check your Twitch name and whether you're subscribed
+        to this channel.
+      </span>
+    </div>
+
+    <div class="row m-1">
+      <span class="font-weight-bold">
+        You can revoke this in your account settings later.
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2 mb-3 justify-content-end">
+      <app-cool-button
+        (click)="onIdentityShare()"
+        [config]="{ buttonText: 'Share Account Details', isVideoComponent: isVideoComponent }"
+      ></app-cool-button>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="PanelState.ClickToRegister">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        A game is starting! The requirements to join are:
+      </span>
+    </div>
+
+    <div class="row m-1">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item py-2">
+          - You have Age of Empires II: Definitive Edition installed and updated.
+        </li>
+        <li class="list-group-item py-2">
+          - You are free for the next 2 - 3 hours.
+        </li>
+      </ul>
+    </div>
+
+    <div class="row m-1 mt-2 mb-3 justify-content-end">
+      <app-cool-button
+        (click)="onRegister()"
+        [config]="{ buttonText: 'Join Raffle', isVideoComponent: isVideoComponent }"
+        [waiting]="registerWaiting"
+      ></app-cool-button>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="PanelState.WaitingForWin">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        You're signed up!
+      </span>
+    </div>
+
+    <div class="row m-1 mb-3">
+      <span class="font-weight-bold">
+        If you are selected, this panel will show you the lobby information you'll need to join. Cross your fingers!
+      </span>
+    </div>
+
+    <app-cool-button
+      *ngIf="!environment.production"
+      (click)="onCheat()"
+      [config]="{ buttonText: 'CHEAT', isVideoComponent: isVideoComponent }"
+    ></app-cool-button>
+  </div>
+
+  <div *ngSwitchCase="PanelState.ConfirmNotAfk">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        You've been selected to play in the community game!
+      </span>
+    </div>
+
+    <div class="row m-1 mb-2">
+      <span class="font-weight-bold">
+        Are you still here and able to play?
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2 mb-3 justify-content-end">
+      <app-cool-button
+        (click)="onConfirmNotAfk()"
+        [config]="{ buttonText: 'Yes, I\'m here!', isVideoComponent: isVideoComponent }"
+        [waiting]="confirmNotAfkWaiting"
+      ></app-cool-button>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="PanelState.ForbiddenKnowledge">
+    <div class="row m-1 mt-3">
+      <span class="font-weight-bold">
+        You've been selected to play in the community game! Here's the info:
+      </span>
+    </div>
+
+    <div class="row m-1 mt-2">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Lobby Id</span>
+        </div>
+        <label class="form-control" id="txtLobbyId" aria-label="Lobby Id" aria-describedby="basic-addon1">
+          {{ lobbyId }}
+        </label>
+      </div>
+    </div>
+
+    <div class="row m-1">
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon2">Lobby Password</span>
+        </div>
+        <label class="form-control" id="txtLobbyPassword" aria-label="Lobby Password" aria-describedby="basic-addon2">
+          {{ lobbyPassword }}
+        </label>
+      </div>
+    </div>
+
+    <div class="row m-1 mt-2 mb-3">
+      <span class="font-weight-bold">
+        To join the game, search for the lobby ID in the multiplayer lobby browser in game. Join it and enter the
+        password when prompted. Have fun!
+      </span>
+    </div>
+  </div>
+</div>
