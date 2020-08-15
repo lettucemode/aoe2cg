@@ -270,6 +270,8 @@ AoE2\ Community\ Games.json
 frontend/semantic-ui/
 frontend/bootstrap/
 frontend/jquery*.js
+frontend/new/
+frontend/old/
 
 # any .zip left hanging around from uploading frontend files to Twitch
 *.zip

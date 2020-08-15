@@ -117,11 +117,23 @@ namespace aoe2cg
             var responseMessage = "Winners rolled: " + string.Join(",", winners.Select(w => w.opaqueUserId));
             responseMessage = responseMessage.TrimEnd(',');
             log.LogInformation(responseMessage);
+
+            // backwards-compat
+            if (extVersion == "1.0.0") 
+            {
+                return new OkObjectResult(new
+                {
+                    success = true,
+                    message = responseMessage,
+                    winners = new JsonNetSerializer().Serialize(winners.Select(w => new { w.displayName, w.opaqueUserId, confirmed = false })),
+                });
+            }
+
             return new OkObjectResult(new
             {
                 success = true,
                 message = responseMessage,
-                winners = new JsonNetSerializer().Serialize(winners.Select(w => new { w.displayName, w.opaqueUserId, confirmed = false })),
+                winners = winners.Select(w => new { w.displayName, w.opaqueUserId, confirmed = false }),
             });
         }
     }
