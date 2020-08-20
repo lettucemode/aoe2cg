@@ -87,7 +87,7 @@ namespace aoe2cg
                 // early exit in case broadcaster rolls more than the number of entrants
                 if (!candidates.Any()) break;
             }
-
+            
             if (winners.Any())
             {
                 // save db records

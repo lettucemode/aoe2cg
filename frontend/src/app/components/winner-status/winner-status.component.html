@@ -1,0 +1,7 @@
+<div class="row m-1">
+  <button type="button" [ngClass]="getClass()" style="font-size: 0.75em;">
+    {{ winner.displayName }}
+    <fa-icon *ngIf="winner.confirmed" [icon]="faUserCheck"></fa-icon>
+    <div *ngIf="!winner.confirmed" class="spinner-border spinner-border-sm"></div>
+  </button>
+</div>

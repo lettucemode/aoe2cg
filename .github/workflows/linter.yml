@@ -22,4 +22,5 @@ jobs:
       - name: Lintify!
         uses: docker://github/super-linter:v2.0.0
         env:
-          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_ARM: true

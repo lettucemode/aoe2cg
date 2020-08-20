@@ -1,0 +1,9 @@
+<div
+  [ngClass]="{
+    'light-mode': context?.theme === 'light',
+    'dark-mode': context?.theme === 'dark'
+  }"
+  style="font-family: LucidaBright, 'Helvetica Neue', Helvetica, Arial, sans-serif; height: 100vh;"
+>
+  <router-outlet></router-outlet>
+</div>
