@@ -1,3 +1,7 @@
+> ** This project is no longer active as a Twitch extension and is not being maintained.** The code is still perfectly servicable, and you are free to use it per the license.
+
+---
+
 # Age of Empires II Community Games Twitch Extension
 
 This is a Twitch panel extension to facilitate community games for Age of Empires II: Definitive Edition.
